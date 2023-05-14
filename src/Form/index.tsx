@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import uuid from 'react-native-uuid';
 
-import { Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Keyboard,
+} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -21,6 +27,7 @@ const Form = ({ setTodos }: FormProps) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormDataProps>({
     defaultValues: {
@@ -34,6 +41,8 @@ const Form = ({ setTodos }: FormProps) => {
       finished: false,
     };
     setTodos(todo);
+    reset();
+    Keyboard.dismiss();
   };
 
   return (
