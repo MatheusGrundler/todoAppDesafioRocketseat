@@ -1,15 +1,21 @@
 import { useState } from 'react';
+import uuid from 'react-native-uuid';
 
 import { Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { AntDesign } from '@expo/vector-icons';
 
 import { styles } from './styles';
+import { ItemProps, TodoListItemProps } from '../TodoList/ListItem';
 
 type FormDataProps = {
   todo: string;
 };
-const Form = () => {
+
+type FormProps = {
+  setTodos: (todo: ItemProps) => void;
+};
+const Form = ({ setTodos }: FormProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const {
@@ -21,7 +27,14 @@ const Form = () => {
       todo: '',
     },
   });
-  const onSubmit = (data: FormDataProps) => console.log(data);
+  const onSubmit = (data: FormDataProps) => {
+    const todo: ItemProps = {
+      content: data.todo,
+      id: uuid.v4() as string,
+      finished: false,
+    };
+    setTodos(todo);
+  };
 
   return (
     <View style={styles.wrapper}>
@@ -48,7 +61,7 @@ const Form = () => {
           name='todo'
         />
         {errors.todo && (
-          <Text style={styles.inputErrorMessage}>Campo obrigatóriorr</Text>
+          <Text style={styles.inputErrorMessage}>Campo obrigatório</Text>
         )}
       </View>
 
